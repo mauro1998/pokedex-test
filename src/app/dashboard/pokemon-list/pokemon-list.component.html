@@ -1,0 +1,64 @@
+<div class="ion-padding">
+	<ion-list *ngIf="!(loading$ | async)">
+		<ion-item *ngFor="let pokemon of pokemons$ | async" lines="full">
+			<ion-thumbnail slot="start">
+				<img [src]="pokemon.picurl" />
+			</ion-thumbnail>
+			<ion-label>
+				<h2 class="capitalize">{{ pokemon.name }}</h2>
+				<p>
+					<ion-chip
+						*ngFor="let type of pokemon.types"
+						color="primary"
+					>
+						<ion-label class="capitalize" color="primary">
+							{{ type }}
+						</ion-label>
+					</ion-chip>
+				</p>
+			</ion-label>
+		</ion-item>
+	</ion-list>
+
+	<ng-container *ngIf="loading$ | async">
+		<ion-list-header>
+			<ion-label>
+				<ion-skeleton-text
+					animated
+					style="width: 20%;"
+				></ion-skeleton-text>
+			</ion-label>
+		</ion-list-header>
+		<ion-item *ngFor="let skeleton of skeletons">
+			<ion-avatar slot="start">
+				<ion-skeleton-text animated></ion-skeleton-text>
+			</ion-avatar>
+			<ion-label>
+				<h3>
+					<ion-skeleton-text
+						animated
+						style="width: 50%;"
+					></ion-skeleton-text>
+				</h3>
+				<p>
+					<ion-skeleton-text
+						animated
+						style="width: 80%;"
+					></ion-skeleton-text>
+				</p>
+				<p>
+					<ion-skeleton-text
+						animated
+						style="width: 60%;"
+					></ion-skeleton-text>
+				</p>
+			</ion-label>
+		</ion-item>
+	</ng-container>
+
+	<ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+		<ion-infinite-scroll-content
+			loadingSpinner="bubbles"
+		></ion-infinite-scroll-content>
+	</ion-infinite-scroll>
+</div>

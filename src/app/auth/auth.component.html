@@ -1,0 +1,13 @@
+<ion-progress-bar *ngIf="loading$ | async" type="indeterminate"></ion-progress-bar>
+<ion-content
+	[scrollEvents]="true"
+	(ionScrollStart)="logScrollStart()"
+	(ionScroll)="logScrolling($event)"
+	(ionScrollEnd)="logScrollEnd()"
+>
+	<h1 class="title">Pokedex</h1>
+
+	<div class="auth-page-container">
+		<router-outlet></router-outlet>
+	</div>
+</ion-content>

@@ -1,0 +1,40 @@
+<form [formGroup]="signInForm" (ngSubmit)="onSubmit($event)" class="block">
+	<div
+		class="block"
+		[class.invalid]="email.invalid && (email.dirty || email.touched)"
+	>
+		<ion-item>
+			<ion-label position="floating">Your Email</ion-label>
+			<ion-input ngDefaultControl formControlName="email"></ion-input>
+		</ion-item>
+		<span class="error">
+			This field required
+		</span>
+	</div>
+
+	<div
+		class="block"
+		[class.invalid]="
+			password.invalid && (password.dirty || password.touched)
+		"
+	>
+		<ion-item>
+			<ion-label position="floating">Password</ion-label>
+			<ion-input
+				ngDefaultControl
+				type="password"
+				formControlName="password"
+			></ion-input>
+		</ion-item>
+		<span class="error">
+			This field required
+		</span>
+	</div>
+
+	<ion-button expand="full" type="submit">Sign in</ion-button>
+</form>
+
+<div class="text-align-center">
+	Don't have an account yet?
+	<a routerLink="/sign-up" class="link">Sign up here!</a>
+</div>
