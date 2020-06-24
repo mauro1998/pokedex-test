@@ -8,7 +8,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NavController, ToastController } from '@ionic/angular';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
-import { filter, map, takeUntil } from 'rxjs/operators';
+import { filter, map, takeUntil, tap } from 'rxjs/operators';
 import * as authActions from '../state/auth.actions';
 import { selectSession } from '../state/auth.selectors';
 
@@ -37,6 +37,10 @@ export class SignInComponent implements OnInit, OnDestroy {
 
 		this.error$ = this.store.pipe(
 			select(selectSession),
+			tap((session) => {
+				if (session.user) this.signInForm.reset();
+				else if (session.error) this.password.reset();
+			}),
 			filter((session) => !!session.error),
 			map((session) => session.error),
 			takeUntil(this.destroy$)
@@ -69,8 +73,6 @@ export class SignInComponent implements OnInit, OnDestroy {
 					password: this.signInForm.value.password,
 				})
 			);
-
-			this.signInForm.reset();
 		}
 	}
 

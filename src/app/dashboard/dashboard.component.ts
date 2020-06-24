@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { AlertController } from '@ionic/angular';
+import { AlertController, NavController } from '@ionic/angular';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -8,6 +8,7 @@ import { selectSession } from '../auth/state/auth.selectors';
 import { User } from '../core/models';
 import { State } from '../reducers';
 import { startLazyFetch } from './state/dashboard.actions';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'app-dashboard',
@@ -20,7 +21,9 @@ export class DashboardComponent implements OnInit {
 
 	constructor(
 		private store: Store<State>,
-		private alertController: AlertController
+		private alertController: AlertController,
+		private router: Router,
+		private navController: NavController
 	) {}
 
 	ngOnInit(): void {
@@ -51,5 +54,13 @@ export class DashboardComponent implements OnInit {
 		});
 
 		await alert.present();
+	}
+
+	get displayBackButton(): boolean {
+		return /\/dashboard\/detail/gi.test(this.router.url);
+	}
+
+	public backToDashboard(): void {
+		this.navController.navigateBack('/dashboard');
 	}
 }
