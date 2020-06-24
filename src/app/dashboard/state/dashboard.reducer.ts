@@ -42,7 +42,7 @@ export const initialState: State = {
 
 	dashboard: {
 		data: [],
-		initialData: null,
+		initialData: [],
 		finished: false,
 		request: {
 			id: null,
@@ -81,7 +81,7 @@ const processActiveRequests = (state: State, action: any): State => {
 		dashboard: {
 			...state.dashboard,
 			data,
-			initialData: state.dashboard.initialData
+			initialData: state.dashboard.initialData.length
 				? state.dashboard.initialData
 				: [...data],
 			finished,

@@ -1,94 +1,107 @@
-<form
-	class="block"
-	[formGroup]="signUpForm"
-	(ngSubmit)="onSubmit($event)"
-	#form
->
-	<div [class.invalid]="
-			firstName.invalid && (firstName.dirty || firstName.touched)
-		"
-	>
-		<ion-item>
-			<ion-label position="floating">First Name</ion-label>
-			<ion-input ngDefaultControl formControlName="firstName"></ion-input>
-		</ion-item>
-		<span class="error">
-			This field required
-		</span>
-	</div>
-
-	<div [class.invalid]="
-			lastName.invalid && (lastName.dirty || lastName.touched)
-		"
-	>
-		<ion-item>
-			<ion-label position="floating">Last Name</ion-label>
-			<ion-input ngDefaultControl formControlName="lastName"></ion-input>
-		</ion-item>
-		<span class="error">
-			This field required
-		</span>
-	</div>
-
-	<div [class.invalid]="email.invalid && (email.dirty || email.touched)"
-	>
-		<ion-item>
-			<ion-label position="floating">Email Address</ion-label>
-			<ion-input ngDefaultControl formControlName="email"></ion-input>
-		</ion-item>
-		<span class="error">
-			This field required
-		</span>
-	</div>
-
-	<div [class.invalid]="
-			password.invalid && (password.dirty || password.touched)
-		"
-	>
-		<ion-item>
-			<ion-label position="floating">Password</ion-label>
-			<ion-input
-				ngDefaultControl
-				type="password"
-				formControlName="password"
-			></ion-input>
-		</ion-item>
-		<span class="error" *ngIf="password.errors?.required">
-			This field required
-		</span>
-		<span class="error" *ngIf="password.errors?.minlength">
-			Password should contain 6+ chars
-		</span>
-	</div>
-
-	<div
+<app-auth>
+	<form
 		class="block"
-		[class.invalid]="
-			(confirmPassword.invalid &&
-				(confirmPassword.dirty || confirmPassword.touched)) ||
-			(confirmPassword.valid && !passwordMatches)
-		"
+		[formGroup]="signUpForm"
+		(ngSubmit)="onSubmit($event)"
+		#form
 	>
-		<ion-item>
-			<ion-label position="floating">Confirm Password</ion-label>
-			<ion-input
-				ngDefaultControl
-				type="password"
-				formControlName="confirmPassword"
-			></ion-input>
-		</ion-item>
-		<span class="error" *ngIf="confirmPassword.errors?.required">
-			This field required
-		</span>
-		<span class="error" *ngIf="confirmPassword.valid && !passwordMatches">
-			Passwords doesn't match
-		</span>
+		<div
+			[class.invalid]="
+				firstName.invalid && (firstName.dirty || firstName.touched)
+			"
+		>
+			<ion-item>
+				<ion-label position="floating">First Name</ion-label>
+				<ion-input
+					ngDefaultControl
+					formControlName="firstName"
+				></ion-input>
+			</ion-item>
+			<span class="error">
+				This field required
+			</span>
+		</div>
+
+		<div
+			[class.invalid]="
+				lastName.invalid && (lastName.dirty || lastName.touched)
+			"
+		>
+			<ion-item>
+				<ion-label position="floating">Last Name</ion-label>
+				<ion-input
+					ngDefaultControl
+					formControlName="lastName"
+				></ion-input>
+			</ion-item>
+			<span class="error">
+				This field required
+			</span>
+		</div>
+
+		<div [class.invalid]="email.invalid && (email.dirty || email.touched)">
+			<ion-item>
+				<ion-label position="floating">Email Address</ion-label>
+				<ion-input ngDefaultControl formControlName="email"></ion-input>
+			</ion-item>
+			<span class="error">
+				This field required
+			</span>
+		</div>
+
+		<div
+			[class.invalid]="
+				password.invalid && (password.dirty || password.touched)
+			"
+		>
+			<ion-item>
+				<ion-label position="floating">Password</ion-label>
+				<ion-input
+					ngDefaultControl
+					type="password"
+					formControlName="password"
+				></ion-input>
+			</ion-item>
+			<span class="error" *ngIf="password.errors?.required">
+				This field required
+			</span>
+			<span class="error" *ngIf="password.errors?.minlength">
+				Password should contain 6+ chars
+			</span>
+		</div>
+
+		<div
+			class="block"
+			[class.invalid]="
+				(confirmPassword.invalid &&
+					(confirmPassword.dirty || confirmPassword.touched)) ||
+				(confirmPassword.valid && !passwordMatches)
+			"
+		>
+			<ion-item>
+				<ion-label position="floating">Confirm Password</ion-label>
+				<ion-input
+					ngDefaultControl
+					type="password"
+					formControlName="confirmPassword"
+				></ion-input>
+			</ion-item>
+			<span class="error" *ngIf="confirmPassword.errors?.required">
+				This field required
+			</span>
+			<span
+				class="error"
+				*ngIf="confirmPassword.valid && !passwordMatches"
+			>
+				Passwords doesn't match
+			</span>
+		</div>
+
+		<ion-button expand="full" type="submit">Sign up</ion-button>
+	</form>
+
+	<div class="text-align-center">
+		Already a member?
+		<a (click)="goToSignIn()" class="link">Sign in here!</a>
 	</div>
-
-	<ion-button expand="full" type="submit">Sign up</ion-button>
-</form>
-
-<div class="text-align-center">
-	Already a member?
-	<a routerLink="/sign-in" class="link">Sign in here!</a>
-</div>
+</app-auth>

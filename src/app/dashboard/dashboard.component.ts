@@ -43,7 +43,9 @@ export class DashboardComponent implements OnInit {
 				},
 				{
 					text: 'Yes',
-					handler: () => this.store.dispatch(logOut()),
+					handler: () => {
+						this.store.dispatch(logOut());
+					},
 				},
 			],
 		});

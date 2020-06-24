@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { IonInfiniteScroll } from '@ionic/angular';
+import { IonInfiniteScroll, NavController } from '@ionic/angular';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { filter, map, shareReplay, tap } from 'rxjs/operators';
@@ -9,7 +8,7 @@ import { getUniqueId } from 'src/app/core/util';
 import { getNextPage, searchItemsInView } from '../state/dashboard.actions';
 import {
 	selectCurrentItemsInDashboard,
-	selectCurrentRequestState
+	selectCurrentRequestState,
 } from '../state/dashboard.selectors';
 
 @Component({
@@ -29,7 +28,7 @@ export class PokemonListComponent implements OnInit {
 
 	infiniteScroll: IonInfiniteScroll;
 
-	constructor(private store: Store, private router: Router) {}
+	constructor(private store: Store, private router: NavController) {}
 
 	ngOnInit(): void {
 		this.loadingItemsInView$ = this.store.pipe(
@@ -75,7 +74,7 @@ export class PokemonListComponent implements OnInit {
 	}
 
 	showDetail(id: string) {
-		this.router.navigate([`/dashboard/detail/${id}`]);
+		this.router.navigateForward(`/dashboard/detail/${id}`);
 	}
 
 	onSearch(value: string) {

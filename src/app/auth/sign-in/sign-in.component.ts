@@ -1,16 +1,16 @@
 import {
 	ChangeDetectionStrategy,
 	Component,
-	OnInit,
 	OnDestroy,
+	OnInit,
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { NavController, ToastController } from '@ionic/angular';
 import { select, Store } from '@ngrx/store';
+import { Observable, Subject } from 'rxjs';
 import { filter, map, takeUntil } from 'rxjs/operators';
 import * as authActions from '../state/auth.actions';
 import { selectSession } from '../state/auth.selectors';
-import { Observable, Subject } from 'rxjs';
-import { ToastController } from '@ionic/angular';
 
 @Component({
 	selector: 'app-sign-in',
@@ -23,7 +23,11 @@ export class SignInComponent implements OnInit, OnDestroy {
 	error$: Observable<Error>;
 	destroy$ = new Subject();
 
-	constructor(private store: Store, private toast: ToastController) {}
+	constructor(
+		private store: Store,
+		private toast: ToastController,
+		private router: NavController
+	) {}
 
 	ngOnInit(): void {
 		this.signInForm = new FormGroup({
@@ -65,6 +69,8 @@ export class SignInComponent implements OnInit, OnDestroy {
 					password: this.signInForm.value.password,
 				})
 			);
+
+			this.signInForm.reset();
 		}
 	}
 
@@ -74,5 +80,9 @@ export class SignInComponent implements OnInit, OnDestroy {
 
 	get password() {
 		return this.signInForm.get('password');
+	}
+
+	goToSignUp() {
+		this.router.navigateRoot('/sign-up');
 	}
 }

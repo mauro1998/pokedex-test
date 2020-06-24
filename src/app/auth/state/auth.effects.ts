@@ -12,7 +12,8 @@ import {
 import { AuthService } from 'src/app/core/auth.service';
 import { User } from 'src/app/core/models';
 import * as AuthActions from './auth.actions';
-import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { NavController } from '@ionic/angular';
 
 @Injectable()
 export class AuthEffects {
@@ -57,7 +58,13 @@ export class AuthEffects {
 		() => {
 			return this.actions$.pipe(
 				ofType(AuthActions.signInSuccess),
-				tap(() => this.router.navigateByUrl('/dashboard'))
+				tap(() => {
+					// tslint:disable-next-line: no-string-literal
+					const url = this.route.snapshot['_routerState'].url;
+					if (!/dashboard/g.test(url)) {
+						this.router.navigateForward('/dashboard');
+					}
+				})
 			);
 		},
 		{ dispatch: false }
@@ -86,7 +93,7 @@ export class AuthEffects {
 		() => {
 			return this.actions$.pipe(
 				ofType(AuthActions.logOutSuccess),
-				tap(() => this.router.navigateByUrl('/sign-in'))
+				tap(() => this.router.navigateBack('/'))
 			);
 		},
 		{ dispatch: false }
@@ -95,6 +102,7 @@ export class AuthEffects {
 	constructor(
 		private actions$: Actions,
 		private auth: AuthService,
-		private router: Router
+		private router: NavController,
+		private route: ActivatedRoute
 	) {}
 }

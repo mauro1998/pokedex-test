@@ -5,3 +5,7 @@ h1.title {
 .auth-page-container {
 	padding: 1em;
 }
+
+:host {
+	height: 100%;
+}
