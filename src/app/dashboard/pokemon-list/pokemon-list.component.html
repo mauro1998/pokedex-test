@@ -1,26 +1,43 @@
-<div class="ion-padding">
-	<ion-list *ngIf="!(loading$ | async)">
-		<ion-item *ngFor="let pokemon of pokemons$ | async" lines="full">
-			<ion-thumbnail slot="start">
-				<img [src]="pokemon.picurl" />
-			</ion-thumbnail>
-			<ion-label>
-				<h2 class="capitalize">{{ pokemon.name }}</h2>
-				<p>
-					<ion-chip
-						*ngFor="let type of pokemon.types"
-						color="primary"
-					>
-						<ion-label class="capitalize" color="primary">
-							{{ type }}
-						</ion-label>
-					</ion-chip>
-				</p>
-			</ion-label>
-		</ion-item>
-	</ion-list>
+<ion-toolbar class="search-bar-container">
+	<ion-searchbar (ionChange)="onSearch($event.detail.value)"></ion-searchbar>
+</ion-toolbar>
 
-	<ng-container *ngIf="loading$ | async">
+<div class="page-container">
+	<ng-container *ngIf="!(loadingItemsInView$ | async)">
+		<ion-list>
+			<ion-item
+				button
+				lines="inset"
+				*ngFor="let item of itemsInView$ | async"
+				(click)="showDetail(item.id)"
+			>
+				<ion-thumbnail slot="start">
+					<img [src]="item.picurl" />
+				</ion-thumbnail>
+				<ion-label>
+					<h2 class="capitalize">{{ item.name }}</h2>
+					<p>
+						<ion-chip
+							*ngFor="let type of item.types"
+							color="primary"
+						>
+							<ion-label class="capitalize" color="primary">
+								{{ type }}
+							</ion-label>
+						</ion-chip>
+					</p>
+				</ion-label>
+			</ion-item>
+		</ion-list>
+
+		<ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+			<ion-infinite-scroll-content
+				loadingSpinner="bubbles"
+			></ion-infinite-scroll-content>
+		</ion-infinite-scroll>
+	</ng-container>
+
+	<ng-container *ngIf="loadingItemsInView$ | async">
 		<ion-list-header>
 			<ion-label>
 				<ion-skeleton-text
@@ -55,10 +72,4 @@
 			</ion-label>
 		</ion-item>
 	</ng-container>
-
-	<ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
-		<ion-infinite-scroll-content
-			loadingSpinner="bubbles"
-		></ion-infinite-scroll-content>
-	</ion-infinite-scroll>
 </div>

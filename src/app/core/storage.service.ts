@@ -30,6 +30,12 @@ export class StorageService {
 		localStorage.setItem(id, value);
 	}
 
+	public remove(key: string) {
+		const id = this.getIdForKey(key);
+		localStorage.removeItem(id);
+		delete this.state[key];
+	}
+
 	private getIdForKey(key: string): string {
 		if (!this.state[key]) {
 			this.state[key] = getUniqueId();

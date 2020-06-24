@@ -4,9 +4,7 @@
 	(ngSubmit)="onSubmit($event)"
 	#form
 >
-	<div
-		class="block"
-		[class.invalid]="
+	<div [class.invalid]="
 			firstName.invalid && (firstName.dirty || firstName.touched)
 		"
 	>
@@ -19,9 +17,7 @@
 		</span>
 	</div>
 
-	<div
-		class="block"
-		[class.invalid]="
+	<div [class.invalid]="
 			lastName.invalid && (lastName.dirty || lastName.touched)
 		"
 	>
@@ -34,9 +30,7 @@
 		</span>
 	</div>
 
-	<div
-		class="block"
-		[class.invalid]="email.invalid && (email.dirty || email.touched)"
+	<div [class.invalid]="email.invalid && (email.dirty || email.touched)"
 	>
 		<ion-item>
 			<ion-label position="floating">Email Address</ion-label>
@@ -47,9 +41,7 @@
 		</span>
 	</div>
 
-	<div
-		class="block"
-		[class.invalid]="
+	<div [class.invalid]="
 			password.invalid && (password.dirty || password.touched)
 		"
 	>

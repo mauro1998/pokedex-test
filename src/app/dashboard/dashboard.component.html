@@ -1,12 +1,41 @@
-<ion-header>
-	<ion-toolbar>
-		<ion-buttons slot="start">
-			<ion-back-button></ion-back-button>
-		</ion-buttons>
-		<ion-title>Pokedex</ion-title>
-	</ion-toolbar>
-</ion-header>
+<ion-menu side="start" content-id="main-content">
+	<ion-header class="menu-header" *ngIf="session$ | async as session">
+		<ion-label>
+			<h3>{{ session.fullName }}</h3>
+		</ion-label>
+		<ion-label>
+			<h4>{{ session.email }}</h4>
+		</ion-label>
+		<ion-avatar class="ion-margin-top">
+			<img src="assets/icon/avatar.svg" />
+		</ion-avatar>
+	</ion-header>
 
-<ion-content>
-	<router-outlet></router-outlet>
-</ion-content>
+	<ion-content>
+		<ion-list>
+			<ion-item button (click)="logOut()">
+				<ion-icon name="log-out-outline" slot="start"></ion-icon>
+				<ion-label>Log Out</ion-label>
+			</ion-item>
+		</ion-list>
+	</ion-content>
+</ion-menu>
+
+<div class="ion-page" id="main-content">
+	<ion-header>
+		<ion-toolbar>
+			<ion-buttons slot="start">
+				<ion-back-button></ion-back-button>
+			</ion-buttons>
+			<ion-title>Pokedex</ion-title>
+			<ion-buttons slot="end">
+				<ion-menu-button></ion-menu-button>
+			</ion-buttons>
+		</ion-toolbar>
+	</ion-header>
+
+	<ion-content>
+		<ion-alert-controller></ion-alert-controller>
+		<router-outlet></router-outlet>
+	</ion-content>
+</div>

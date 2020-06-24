@@ -35,3 +35,8 @@ export const signUpFailure = createAction(
 
 // Check auth state actions
 export const checkAuthState = createAction('[Auth] Check Auth State');
+
+// Log out
+export const logOut = createAction('[Auth] Log Out');
+
+export const logOutSuccess = createAction('[Auth] Log Out Success');

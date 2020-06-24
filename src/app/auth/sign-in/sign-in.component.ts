@@ -41,7 +41,7 @@ export class SignInComponent implements OnInit, OnDestroy {
 		this.error$.subscribe(async (error) => {
 			const toast = await this.toast.create({
 				animated: true,
-				duration: 5000,
+				duration: 3000,
 				message: error.message,
 				position: 'bottom',
 			});

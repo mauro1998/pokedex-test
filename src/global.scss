@@ -26,8 +26,7 @@
 @import '~@ionic/angular/css/flex-utils.css';
 
 body {
-	font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande',
-		'Lucida Sans', Arial, sans-serif;
+	font-family: sans-serif;
 }
 
 .block {
@@ -52,6 +51,18 @@ span.error {
 	text-align: center;
 }
 
+.text-align-right {
+	text-align: right;
+}
+
 a.link {
 	color: dodgerblue;
+}
+
+.capitalize {
+	text-transform: capitalize;
+}
+
+.bold {
+	font-weight: bold;
 }

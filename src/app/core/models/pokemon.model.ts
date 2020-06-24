@@ -7,5 +7,14 @@ export class Pokemon {
 		public height: number,
 		public weight: number,
 		public movements: string[]
-	) {}
+	) {
+		if (!(this.picurl || '').trim()) {
+			this.picurl = 'assets/unknown.jpg';
+		}
+	}
+}
+
+export interface PokeapiData {
+	count: number;
+	results: Pokemon[];
 }

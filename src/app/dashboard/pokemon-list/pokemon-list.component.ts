@@ -1,12 +1,16 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { IonInfiniteScroll } from '@ionic/angular';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { filter, map, shareReplay } from 'rxjs/operators';
+import { filter, map, shareReplay, tap } from 'rxjs/operators';
 import { Pokemon } from 'src/app/core/models';
 import { getUniqueId } from 'src/app/core/util';
-import { loadPokemons } from '../state/dashboard.actions';
-import { selectDashboardState } from '../state/dashboard.selectors';
+import { getNextPage, searchItemsInView } from '../state/dashboard.actions';
+import {
+	selectCurrentItemsInDashboard,
+	selectCurrentRequestState
+} from '../state/dashboard.selectors';
 
 @Component({
 	selector: 'app-pokemon-list',
@@ -15,64 +19,72 @@ import { selectDashboardState } from '../state/dashboard.selectors';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PokemonListComponent implements OnInit {
-	offset = 0;
 	limit = 10;
 	lastReqId: string;
 	firstReqId: string;
-	skeletons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+	skeletons = [1, 2, 3, 4, 5, 6];
 
-	pokemons$: Observable<Pokemon[]>;
-	loading$: Observable<boolean>;
+	itemsInView$: Observable<Pokemon[]>;
+	loadingItemsInView$: Observable<boolean>;
 
 	infiniteScroll: IonInfiniteScroll;
 
-	constructor(private store: Store) {}
+	constructor(private store: Store, private router: Router) {}
 
 	ngOnInit(): void {
-		const data$ = this.store.pipe(
-			select(selectDashboardState),
+		this.loadingItemsInView$ = this.store.pipe(
+			select(selectCurrentRequestState),
+			tap((request) => {
+				if (this.infiniteScroll && !request.pending) {
+					this.infiniteScroll.complete();
+				}
+			}),
+			filter((request) => request.id === this.firstReqId),
+			map((request) => request.pending),
 			shareReplay(1)
 		);
 
-		this.pokemons$ = data$.pipe(map((state) => state.pokemons));
-		this.loading$ = data$.pipe(
-			filter((state) => state.request.id === this.firstReqId),
-			map((state) => state.request.loading),
-			shareReplay(1)
+		this.itemsInView$ = this.store.pipe(
+			select(selectCurrentItemsInDashboard),
+			tap((state) => {
+				if (this.infiniteScroll) {
+					this.infiniteScroll.disabled = state.finished;
+				}
+			}),
+			map((state) => state.items)
 		);
-
-		data$.subscribe((data) => {
-			if (!data.request.loading && this.infiniteScroll) {
-				console.log('completed!');
-				this.infiniteScroll.complete();
-			}
-
-			this.offset = data.count;
-		});
 
 		this.loadData();
 	}
 
 	loadData(event = null) {
+		if (event) {
+			this.infiniteScroll = event.target;
+		}
+
 		this.lastReqId = getUniqueId();
 
 		if (!this.firstReqId) this.firstReqId = this.lastReqId;
 
 		this.store.dispatch(
-			loadPokemons({
+			getNextPage({
 				limit: this.limit,
-				offset: this.offset,
 				requestId: this.lastReqId,
 			})
 		);
+	}
 
-		if (event) {
-			this.infiniteScroll = event.target;
-		}
-		// App logic to determine if all data is loaded
-		// and disable the infinite scroll
-		// if (data.length == 1000) {
-		// event.target.disabled = true;
-		// }
+	showDetail(id: string) {
+		this.router.navigate([`/dashboard/detail/${id}`]);
+	}
+
+	onSearch(value: string) {
+		const val = value.trim();
+
+		this.store.dispatch(
+			searchItemsInView({
+				value: val,
+			})
+		);
 	}
 }

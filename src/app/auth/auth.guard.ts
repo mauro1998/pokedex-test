@@ -14,24 +14,26 @@ import { AuthService } from '../core/auth.service';
 	providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
-	constructor(private _auth: AuthService, private _router: Router) {}
+	constructor(private auth: AuthService, private router: Router) {}
 
 	canActivate(
 		next: ActivatedRouteSnapshot,
 		state: RouterStateSnapshot
 	): Observable<boolean | UrlTree> {
-		return this._auth.getSession().pipe(
+		return this.auth.getSession().pipe(
 			map((user) => {
 				switch (state.url) {
 					case '/sign-in':
 					case '/sign-up':
 						return user
-							? this._router.createUrlTree(['dashboard'])
+							? this.router.createUrlTree(['dashboard'])
 							: true;
-					default:
+					case '/dashboard':
 						return user
 							? true
-							: this._router.createUrlTree(['sign-in']);
+							: this.router.createUrlTree(['sign-in']);
+					default:
+						return true;
 				}
 			})
 		);

@@ -80,5 +80,8 @@ export const reducer = createReducer(
 				loading: false,
 			},
 		};
+	}),
+	on(AuthActions.logOutSuccess, () => {
+		return { ...initialState };
 	})
 );

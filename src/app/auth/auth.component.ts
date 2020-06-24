@@ -3,7 +3,6 @@ import { Observable } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { selectAuthState } from './state/auth.selectors';
 import { map } from 'rxjs/operators';
-import { checkAuthState } from './state/auth.actions';
 
 @Component({
 	selector: 'app-auth',
