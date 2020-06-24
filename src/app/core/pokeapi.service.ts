@@ -72,6 +72,8 @@ export class PokeapiService {
 	public retrieveFromInternalStorage(): Observable<PokeapiData> {
 		return this.storage.get<PokeapiData>(this.storageKey).pipe(
 			map((data) => {
+				if (!data) return null;
+
 				return {
 					count: data.count,
 					results: data.results.map(
